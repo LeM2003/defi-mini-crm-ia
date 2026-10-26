@@ -15,9 +15,11 @@
   <h1>Mini-CRM</h1>
   <label>Connecté en tant que : <select id="utilisateur"></select></label>
   <div id="pipeline"></div>
-  <h2>Tableau de bord</h2>
-  <p>Pipeline en cours : <b id="total"></b></p>
-  <p>Par étape : <code id="par-etape"></code></p>
+  <div id="tableau-de-bord" hidden>
+    <h2>Tableau de bord</h2>
+    <p>Pipeline en cours : <b id="total"></b></p>
+    <p>Par étape : <code id="par-etape"></code></p>
+  </div>
   <script type="module" src="app.js"></script>
 </body>
 </html>

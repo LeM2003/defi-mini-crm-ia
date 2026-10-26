@@ -1,4 +1,4 @@
-import { clientsVisibles } from "./acces.js";
+import { clientsVisibles, peutVoirTableauDeBord } from "./acces.js";
 import { totalParEtape, totalPipeline } from "./tableau.js";
 
 const ETAPES = ["prospect", "qualifie", "proposition", "gagne", "perdu"];
@@ -25,9 +25,11 @@ function afficher() {
     }
     colonnes.append(col);
   }
-  // Tableau de bord
-  document.getElementById("total").textContent = totalPipeline(clients) + " FCFA";
-  document.getElementById("par-etape").textContent = JSON.stringify(totalParEtape(clients));
+  // Tableau de bord : réservé au responsable, rien n'est calculé ni écrit sinon
+  const autorise = peutVoirTableauDeBord(moi);
+  document.getElementById("tableau-de-bord").hidden = !autorise;
+  document.getElementById("total").textContent = autorise ? totalPipeline(clients) + " FCFA" : "";
+  document.getElementById("par-etape").textContent = autorise ? JSON.stringify(totalParEtape(clients)) : "";
 }
 choix.addEventListener("change", afficher);
 afficher();
