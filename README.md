@@ -81,6 +81,15 @@ par l'IA.
 
 ---
 
+## Limites de cette version
+
+- **Les rôles sont simulés côté navigateur.** Il n'y a pas de serveur : le menu « Connecté en tant que » permet de choisir n'importe
+  quel rôle, et `donnees/clients.json` est téléchargé en entier par tout navigateur. Les règles de droits (`acces.js`, `pipeline.js`) sont
+  appliquées dans des fonctions pures testées, mais elles ne protègent pas les données de quelqu'un qui lit les fichiers ou les outils du
+  navigateur. Une vraie protection demande un serveur avec authentification.
+- **Les modifications sont enregistrées dans le `localStorage` du navigateur** : elles ne sont pas partagées entre navigateurs ni entre
+  personnes, et disparaissent si on vide les données du site.
+
 ## Livrables (à remplir par le candidat)
 
 - Dépôt : 
