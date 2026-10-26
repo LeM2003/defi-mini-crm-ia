@@ -11,7 +11,7 @@ dont vous ne savez pas d'où il vient.*
 
 |Heure|Ce que j'ai demandé à l'IA (en résumé)|Ce qu'elle a produit|Ce que j'ai vérifié, corrigé ou refusé|
 |-|-|-|-|
-|||||
+| 9 h 42 | Lire tout le code et lister les défauts, sans coder | 16 points classés par gravité, dont mes 4 soupçons confirmés par exécution | J’ai recalculé les totaux à la main (17 650 000 FCFA) : ses chiffres sont justes. J’ai tranché ses 3 questions. |
 
 ## Les erreurs de l'IA que j'ai repérées
 
