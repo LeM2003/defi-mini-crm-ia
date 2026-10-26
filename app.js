@@ -1,4 +1,4 @@
-import { clientsVisibles, peutModifier, peutReattribuer, peutVoirTableauDeBord } from "./acces.js";
+import { clientsSansProprietaire, clientsVisibles, peutModifier, peutReattribuer, peutVoirTableauDeBord } from "./acces.js";
 import { ActionRefusee, deplacerClient, etapeVoisine, modifierFiche, reattribuerClient } from "./pipeline.js";
 import { appliquerModifications, chargerModifications, enregistrerModification } from "./stockage.js";
 import { ETAPES, formaterFCFA, montantsInvalides, totalParEtape, totalPipeline } from "./tableau.js";
@@ -30,7 +30,9 @@ fiche.className = "fiche";
 pipelineEl.after(fiche);
 const montantsInvalidesEl = document.createElement("div");
 montantsInvalidesEl.className = "montants-invalides";
-document.getElementById("tableau-de-bord").append(montantsInvalidesEl);
+const sansCommercialEl = document.createElement("div");
+sansCommercialEl.className = "sans-commercial";
+document.getElementById("tableau-de-bord").append(sansCommercialEl, montantsInvalidesEl);
 
 function el(balise, classe, texte) {
   const e = document.createElement(balise);
@@ -67,14 +69,17 @@ function modifier(client, champs) {
   }
 }
 
+// Ouvre la fiche d'un client (ou la ferme avec null) et efface l'éventuel message d'erreur.
+function ouvrirFiche(id) {
+  idFiche = id;
+  erreur.textContent = "";
+  dessiner();
+}
+
 function carte(moi, c, invalides) {
   const invalide = invalides.has(c.id);
   const article = el("article", invalide ? "carte carte-invalide" : "carte");
-  const ouvrir = bouton("carte-ouvrir", undefined, () => {
-    idFiche = c.id;
-    erreur.textContent = "";
-    dessiner();
-  });
+  const ouvrir = bouton("carte-ouvrir", undefined, () => ouvrirFiche(c.id));
   ouvrir.append(el("span", "carte-entreprise", c.entreprise), " ", el("span", "carte-montant", invalide ? "montant invalide" : formaterFCFA(c.montant_fcfa)));
   article.append(ouvrir);
   if (peutModifier(moi, c)) {
@@ -114,6 +119,7 @@ function dessinerTableauDeBord(moi) {
   total.textContent = "";
   parEtape.replaceChildren();
   montantsInvalidesEl.replaceChildren();
+  sansCommercialEl.replaceChildren();
   if (!autorise) return;
   total.textContent = formaterFCFA(totalPipeline(clients));
   const totaux = totalParEtape(clients);
@@ -121,6 +127,19 @@ function dessinerTableauDeBord(moi) {
     const ligne = document.createElement("li");
     ligne.append(el("span", "kpi-stage-name", etape), " ", el("span", "kpi-stage-amount", formaterFCFA(totaux[etape] ?? 0)));
     parEtape.append(ligne);
+  }
+  const sansCommercial = clientsSansProprietaire(moi, clients);
+  if (sansCommercial.length > 0) {
+    const liste = el("ul", "sans-commercial-liste");
+    for (const c of sansCommercial) {
+      const ligne = el("li", "sans-commercial-ligne");
+      ligne.append(
+        el("span", "sans-commercial-client", `${c.entreprise} · ${c.etape}`),
+        bouton("bouton-reattribuer", "Réattribuer", () => ouvrirFiche(c.id))
+      );
+      liste.append(ligne);
+    }
+    sansCommercialEl.append(el("h3", "sans-commercial-titre", `Clients sans commercial (${sansCommercial.length})`), liste);
   }
   const invalides = montantsInvalides(clients);
   if (invalides.length > 0) {
@@ -179,13 +198,7 @@ function dessinerFiche(moi, visibles) {
     fiche.append(champ);
   }
 
-  fiche.append(
-    bouton("bouton-fermer", "Fermer", () => {
-      idFiche = null;
-      erreur.textContent = "";
-      dessiner();
-    })
-  );
+  fiche.append(bouton("bouton-fermer", "Fermer", () => ouvrirFiche(null)));
 }
 
 function dessiner() {
@@ -197,9 +210,5 @@ function dessiner() {
   dessinerFiche(moi, visibles);
 }
 
-choix.addEventListener("change", () => {
-  idFiche = null;
-  erreur.textContent = "";
-  dessiner();
-});
+choix.addEventListener("change", () => ouvrirFiche(null));
 dessiner();
