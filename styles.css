@@ -281,9 +281,12 @@ body {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .user-select-label {
+  flex-shrink: 0;
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   color: var(--text-secondary);
@@ -311,6 +314,9 @@ body {
   background-position: right var(--space-2) center;
   background-size: 16px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .user-select:hover {
@@ -335,13 +341,27 @@ body {
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--space-2);
 }
 
 .alert-banner:empty,
 .montants-invalides:empty {
   display: none;
+}
+
+.montants-invalides-titre {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.montants-invalides-liste {
+  list-style: disc;
+  padding-left: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
 }
 
 /* Badges génériques */
@@ -355,12 +375,6 @@ body {
   font-weight: var(--weight-semibold);
   letter-spacing: 0.02em;
   white-space: nowrap;
-}
-
-.badge-subtle {
-  background-color: var(--bg-surface-subtle);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
 }
 
 .badge-manager {
@@ -487,14 +501,14 @@ body {
 #par-etape,
 .kpi-stage-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--space-3);
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Stylisation des <li> générés par app.js pour en faire des tuiles KPI */
+/* Stylisation des <li> générés par app.js */
 #par-etape li {
   background-color: var(--bg-surface-subtle);
   border: 1px solid var(--border-subtle);
@@ -526,7 +540,6 @@ body {
 #par-etape li:nth-child(4) { border-top: 3px solid var(--color-gagne); }
 #par-etape li:nth-child(5) { border-top: 3px solid var(--color-perdu); }
 
-/* Classes pour le balisage structuré des tuiles d'étape (Claude Code) */
 .kpi-stage-name {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
@@ -544,39 +557,235 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   6. PIPELINE EN 5 COLONNES & CARTES CLIENTS
+   5b. ENCARTS RESPONSABLE (SANS COMMERCIAL & HISTORIQUE)
    -------------------------------------------------------------------------- */
 
-/* Conteneur principal #pipeline : 5 colonnes desktop, 1 seule colonne à la fois sur mobile */
-#pipeline {
+/* Encart Clients sans commercial */
+.sans-commercial {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-proposition);
+  border-left: 4px solid var(--color-proposition);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
   display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-  gap: var(--space-4);
-  padding-bottom: var(--space-4);
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-xs);
 }
 
-@media (min-width: 769px) {
-  #pipeline {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(210px, 1fr));
-    gap: var(--space-4);
-    overflow-x: auto;
-    scroll-snap-type: none;
+.sans-commercial:empty {
+  display: none;
+}
+
+.sans-commercial-titre {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-proposition);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sans-commercial-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sans-commercial-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.sans-commercial-ligne:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+.sans-commercial-client {
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.bouton-reattribuer {
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--accent-border);
+  background-color: var(--accent-subtle);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bouton-reattribuer:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.bouton-reattribuer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Encart Historique des modifications */
+.historique {
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.historique:empty {
+  display: none;
+}
+
+.historique-titre {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.historique-liste {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.historique-ligne {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.4;
+  border-bottom: 1px dashed var(--border-subtle);
+  padding-bottom: var(--space-2);
+}
+
+@media (min-width: 641px) {
+  .historique-ligne {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--space-2);
   }
 }
 
-/* Colonne de chaque étape (section) */
-#pipeline > section {
-  flex: 0 0 100%;
-  width: 100%;
-  min-width: 100%;
-  max-width: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+.historique-date {
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.historique-texte {
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* --------------------------------------------------------------------------
+   6. PIPELINE MULTI-DISPOSITIFS (OPTION 1 : VERTICAL SUR MOBILE, EN-TÊTE COLLANT)
+   -------------------------------------------------------------------------- */
+
+/* Layout par défaut (Desktop >= 1025px) : 5 colonnes côte à côte */
+#pipeline {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* Layout intermédiaire (Tablette 641px – 1024px) : grille multi-colonnes aérée */
+@media (min-width: 641px) and (max-width: 1024px) {
+  #pipeline {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .user-control-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    gap: var(--space-2);
+  }
+
+  .user-select-label {
+    flex-shrink: 0;
+  }
+
+  .user-select {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(100% - 90px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+}
+
+/* Layout mobile (<= 640px, notamment 390px) : étapes empilées verticalement */
+@media (max-width: 640px) {
+  #pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+  }
+}
+
+/* Colonne d'étape (section / .colonne) */
+#pipeline > section,
+.colonne {
   background-color: var(--bg-surface-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-xl);
@@ -585,29 +794,20 @@ body {
   flex-direction: column;
   gap: var(--space-3);
   box-shadow: var(--shadow-xs);
-  transition: border-color var(--transition-fast);
-  min-height: 280px;
-}
-
-@media (min-width: 769px) {
-  #pipeline > section {
-    flex: initial;
-    width: auto;
-    min-width: 210px;
-    max-width: none;
-    scroll-snap-align: none;
-  }
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+  min-height: 200px;
 }
 
 /* Bordures supérieures d'accentuation par étape */
-#pipeline > section:nth-child(1) { border-top: 4px solid var(--color-prospect); }
-#pipeline > section:nth-child(2) { border-top: 4px solid var(--color-qualifie); }
-#pipeline > section:nth-child(3) { border-top: 4px solid var(--color-proposition); }
-#pipeline > section:nth-child(4) { border-top: 4px solid var(--color-gagne); }
-#pipeline > section:nth-child(5) { border-top: 4px solid var(--color-perdu); }
+#pipeline > section:nth-child(1), .colonne:nth-child(1) { border-top: 4px solid var(--color-prospect); }
+#pipeline > section:nth-child(2), .colonne:nth-child(2) { border-top: 4px solid var(--color-qualifie); }
+#pipeline > section:nth-child(3), .colonne:nth-child(3) { border-top: 4px solid var(--color-proposition); }
+#pipeline > section:nth-child(4), .colonne:nth-child(4) { border-top: 4px solid var(--color-gagne); }
+#pipeline > section:nth-child(5), .colonne:nth-child(5) { border-top: 4px solid var(--color-perdu); }
 
-/* En-tête de colonne (h2) */
-#pipeline > section > h2 {
+/* En-tête de colonne (h2 / .colonne-titre) */
+#pipeline > section > h2,
+.colonne-titre {
   font-size: var(--text-sm);
   font-weight: var(--weight-bold);
   color: var(--text-primary);
@@ -621,8 +821,72 @@ body {
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* Cartes clients générées par app.js (article) */
-#pipeline > section > article {
+/* Mobile : En-tête collant (Sticky Header) */
+@media (max-width: 640px) {
+  #pipeline > section,
+  .colonne {
+    min-height: auto;
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  #pipeline > section > h2,
+  .colonne-titre {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--bg-surface-elevated);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) var(--space-3) calc(var(--space-3) * -1);
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-xs);
+  }
+
+  /* Règle spécifique : une étape vide (0 client) se réduit à son seul en-tête */
+  #pipeline > section:not(:has(article)),
+  .colonne:not(:has(.carte)) {
+    min-height: auto;
+    padding: var(--space-2) var(--space-3);
+    background-color: var(--bg-surface-subtle);
+    opacity: 0.85;
+  }
+
+  #pipeline > section:not(:has(article)) > h2,
+  .colonne:not(:has(.carte)) > .colonne-titre {
+    position: static;
+    margin: 0;
+    padding: 0;
+    border-bottom: none;
+    background: transparent;
+    box-shadow: none;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  #pipeline > section:not(:has(article)) > h2::after,
+  .colonne:not(:has(.carte)) > .colonne-titre::after {
+    content: "0 client";
+    font-size: var(--text-xs);
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    padding: 1px 6px;
+    border-radius: var(--radius-full);
+    font-weight: var(--weight-normal);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. CARTES CLIENTS & BOUTONS D'ACTION
+   -------------------------------------------------------------------------- */
+
+/* Carte client (article / .carte) */
+#pipeline > section > article,
+.carte {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -634,38 +898,102 @@ body {
   font-size: var(--text-sm);
   line-height: 1.4;
   color: var(--text-primary);
-  cursor: pointer;
   transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal), background-color var(--transition-normal);
   position: relative;
 }
 
-#pipeline > section > article:hover {
+#pipeline > section > article:hover,
+.carte:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
   border-color: var(--border-strong);
   background-color: var(--bg-surface-elevated);
 }
 
-#pipeline > section > article:active {
+#pipeline > section > article:active,
+.carte:active {
   transform: translateY(0);
   box-shadow: var(--shadow-xs);
 }
 
-#pipeline > section > article:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+#pipeline > section > article:focus-within,
+.carte:focus-within {
+  border-color: var(--accent);
 }
 
-/* --------------------------------------------------------------------------
-   7. BOUTONS D'ÉTAPE DU PIPELINE (.bouton-etape, .bouton-precedent, .bouton-suivant)
-   -------------------------------------------------------------------------- */
+/* Bouton déclencheur de la carte */
+.carte-ouvrir {
+  appearance: none;
+  background: transparent;
+  border: none;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+}
+
+.carte-ouvrir:focus,
+.carte-ouvrir:focus-visible {
+  outline: none;
+}
+
+.carte-entreprise {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.carte-montant {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--accent);
+}
+
+.carte-invalide,
+.carte.carte-invalide {
+  background-color: var(--bg-perdu);
+  border-color: var(--border-perdu);
+  border-left: 4px solid var(--color-perdu);
+}
+
+.carte-invalide:hover {
+  background-color: var(--bg-perdu);
+  border-color: var(--color-perdu);
+}
+
+.carte-invalide .carte-montant {
+  color: var(--color-perdu);
+  font-size: var(--text-xs);
+  font-style: italic;
+  font-weight: var(--weight-bold);
+}
+
+/* Rangée d'actions sur la carte */
+.carte-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px dashed var(--border-subtle);
+}
+
+/* Boutons d'étape (.bouton-etape, .bouton-precedent, .bouton-suivant) */
 .bouton-etape {
   appearance: none;
   font-family: var(--font-sans);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semibold);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
   padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   border: 1px solid var(--border-subtle);
   background-color: var(--bg-surface-subtle);
   color: var(--text-secondary);
@@ -677,7 +1005,8 @@ body {
   transition: all var(--transition-fast);
   user-select: none;
   white-space: nowrap;
-  min-height: 28px;
+  min-height: 36px;
+  min-width: 40px;
 }
 
 /* Survol de base */
@@ -705,7 +1034,7 @@ body {
 /* État désactivé */
 .bouton-etape:disabled,
 .bouton-etape[disabled] {
-  opacity: 0.4;
+  opacity: 0.25;
   cursor: not-allowed;
   pointer-events: none;
   transform: none;
@@ -737,12 +1066,13 @@ body {
   box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
 }
 
-/* Rangée d'actions sur mobile pour faciliter le toucher */
-@media (max-width: 768px) {
+/* Optimisation mobile : boutons d'étape faciles à toucher au pouce (>= 42px) */
+@media (max-width: 640px) {
   .bouton-etape {
-    min-height: 34px;
-    padding: var(--space-2) var(--space-3);
-    font-size: var(--text-xs);
+    min-height: 42px;
+    min-width: 48px;
+    font-size: var(--text-base);
+    padding: var(--space-2) var(--space-4);
   }
 }
 
@@ -775,13 +1105,14 @@ body {
   display: none !important;
 }
 
-/* Adaptation mobile de la fiche */
+/* Adaptation mobile de la fiche (lisible à 390px) */
 @media (max-width: 640px) {
   .fiche {
     max-width: 100%;
     width: 100%;
+    height: 100%;
     border-left: none;
-    box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.25);
+    box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.35);
     padding: var(--space-5) var(--space-4);
   }
 }
@@ -832,6 +1163,12 @@ body {
 
 /* Champs de saisie (input, textarea) */
 .fiche-champ {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fiche-champ input {
   appearance: none;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -842,22 +1179,35 @@ body {
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-3);
   width: 100%;
+  min-height: 40px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.fiche-champ:hover {
+.fiche-champ input:hover {
   border-color: var(--border-strong);
 }
 
-.fiche-champ:focus,
-.fiche-champ:focus-visible {
+.fiche-champ input:focus,
+.fiche-champ input:focus-visible {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-subtle);
 }
 
+.fiche-champ input[readonly] {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-muted);
+  cursor: default;
+}
+
 /* Sélecteur de réattribution à un commercial */
 .fiche-reattribution {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fiche-reattribution select {
   appearance: none;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -868,6 +1218,7 @@ body {
   border-radius: var(--radius-md);
   padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
   width: 100%;
+  min-height: 40px;
   cursor: pointer;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -876,12 +1227,12 @@ body {
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.fiche-reattribution:hover {
+.fiche-reattribution select:hover {
   border-color: var(--border-strong);
 }
 
-.fiche-reattribution:focus,
-.fiche-reattribution:focus-visible {
+.fiche-reattribution select:focus,
+.fiche-reattribution select:focus-visible {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-subtle);
@@ -896,7 +1247,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  padding: var(--space-2) var(--space-5);
+  padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -905,6 +1256,7 @@ body {
   justify-content: center;
   gap: var(--space-2);
   user-select: none;
+  min-height: 44px;
   box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
 }
 
@@ -942,7 +1294,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -951,6 +1303,7 @@ body {
   justify-content: center;
   gap: var(--space-2);
   user-select: none;
+  min-height: 44px;
 }
 
 .bouton-fermer:hover {
