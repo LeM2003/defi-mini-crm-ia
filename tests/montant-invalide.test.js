@@ -26,7 +26,10 @@ test("formaterFCFA refuse un montant non numérique ou négatif (jamais « NaN F
 });
 
 test("le message d'erreur du total cite le client et la valeur fautive", () => {
-  assert.throws(() => totalPipeline([{ id: "c99", etape: "gagne", montant_fcfa: "abc" }]), /c99.*"abc"/);
+  assert.throws(
+    () => totalPipeline([{ id: "c99", etape: "gagne", montant_fcfa: "abc" }]),
+    (erreur) => erreur instanceof RangeError && erreur.message.includes("c99") && erreur.message.includes('"abc"')
+  );
 });
 
 test("zéro, nombres et chaînes numériques restent acceptés", () => {

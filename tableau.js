@@ -1,10 +1,18 @@
 // Indicateurs du tableau de bord.
-// Les montants peuvent arriver en chaîne ("90000") : on les convertit avant d'additionner.
-const montant = (c) => Number(c.montant_fcfa);
+// Un montant est un nombre fini >= 0. Une chaîne numérique ("90000") est convertie ; tout le reste est refusé
+// (Number() transformerait null ou "" en 0 sans prévenir).
+function enNombre(valeur, idClient) {
+  const nombre = typeof valeur === "string" && valeur.trim() !== "" ? Number(valeur) : valeur;
+  if (typeof nombre !== "number" || !Number.isFinite(nombre) || nombre < 0) {
+    throw new RangeError(`Montant invalide ${JSON.stringify(valeur)}` + (idClient ? ` (client ${idClient})` : ""));
+  }
+  return nombre;
+}
+const montant = (c) => enNombre(c.montant_fcfa, c.id);
 
 // « 17650000 » -> « 17 650 000 FCFA ». Intl met des espaces insécables : on les remplace par des espaces normaux.
-export function formaterFCFA(nombre) {
-  return new Intl.NumberFormat("fr-FR").format(nombre).replace(/\s/g, " ") + " FCFA";
+export function formaterFCFA(valeur) {
+  return new Intl.NumberFormat("fr-FR").format(enNombre(valeur)).replace(/\s/g, " ") + " FCFA";
 }
 
 export function totalParEtape(clients) {
