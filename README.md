@@ -94,6 +94,10 @@ par l'IA.
 
 - Dépôt : https://github.com/LeM2003/defi-mini-crm-ia
 - Site publié sur here.now : https://sacred-pagoda-9adh.here.now/
-- Fichiers publiés (facultatif) : 
+- Fichiers publiés (facultatif) : captures d'écran (données fictives), https://awake-glacier-w4v2.here.now/ — directement :
+  [ordinateur](https://awake-glacier-w4v2.here.now/capture-ordinateur.png),
+  [mobile](https://awake-glacier-w4v2.here.now/capture-mobile.png),
+  [fiche](https://awake-glacier-w4v2.here.now/capture-fiche.png),
+  [tableau de bord](https://awake-glacier-w4v2.here.now/capture-tableau-de-bord.png)
 - Outil(s) d'IA utilisé(s) : Claude Code, Antigravity, Claude
 - Heure de départ / heure de fin : 9 h 40 / 
