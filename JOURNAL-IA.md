@@ -30,13 +30,31 @@ dont vous ne savez pas d'où il vient.*
 | 11 h 33 | « Go » : vérifier que `update_styles.py` n’est ni commité ni dans le dossier, fusionner `ui-mobile` (Antigravity, `d7cf7f8`) dans `main`, tester, vérifier les 3 utilisateurs à 1366 px et 390 px, republier, mettre à jour les captures, pousser | `update_styles.py` : absent du dossier, absent de `ui-mobile`, absent de tout l’historique du dépôt (aucun fichier `.py` suivi) ; rien à supprimer. Fusion par un commit de fusion normal (`bb9b55b`, sans conflit, `ui-mobile` ne change que `styles.css`). Site republié sur la même adresse et site de captures mis à jour sur la sienne (`awake-glacier-w4v2`). | 131 tests sur 131. Chrome sans interface, en local puis sur le site publié : Awa 16 clients, Ibrahima 7, Mariama 30 et `17 650 000 FCFA` ; tableau de bord et encart « Clients sans commercial » réservés à Mariama ; aucun élément hors de l’écran, cibles tactiles de 36 px au moins, fiche dans l’écran, aux deux largeurs. Les scénarios (a) encart et (b) historique rejoués sur la version fusionnée : aucune régression. Les 9 fichiers JS, CSS et JSON publiés sont identiques à ceux de `main`, et les 4 captures publiées à celles que j’ai prises. 0 classe CSS inutilisée sur 63. **Défaut visible, non corrigé (le fichier est à Antigravity) :** sur mobile (390 et 360 px) chaque colonne du pipeline ne fait que 175 px sur 358 au lieu de remplir la largeur, parce que la règle de bureau `#pipeline { align-items: start }` reste active quand la colonne devient un `flex` vertical ; il faudrait `align-items: stretch` dans la règle mobile. La capture mobile publiée montre ce défaut. Je ne l’avais pas vu avant la fusion, car ma vérification mesurait les débordements, pas la largeur des colonnes. |
 | 11 h 36 | Corriger les colonnes mobiles : ajouter `align-items: stretch` dans la règle mobile `#pipeline` de `styles.css` (Antigravity m’a autorisé à modifier le fichier directement sur `main`), vérifier à 390 et 360 px, tester, republier le site et les captures, et noter que ma vérification mesurait les débordements et non la largeur des colonnes | Une seule ligne ajoutée à `styles.css` (commit `424ee4e`), sans autre changement. Pas de test automatique possible pour une règle CSS : la vérification est une mesure dans le navigateur. | **Avant :** colonnes de 175 px sur 358 à 390 px. **Après :** 358/358/358/358/358 à 390 px, 328 à 360 px et 608 à 640 px, pour les 3 utilisateurs, aussi bien en local que sur le site publié ; la grille à 768 et 1366 px n’a pas bougé (224 et 248 px) ; aucun débordement de la page. Cette fois la vérification mesure la largeur de chaque colonne et sa position par rapport au conteneur, pas seulement les débordements. 131 tests sur 131, vérification complète des 3 utilisateurs rejouée (16, 7 et 30 clients, `17 650 000 FCFA` pour Mariama seule). Site et galerie de captures republiés sur leurs adresses, fichiers identiques à ceux de `main` ; j’ai regardé la capture mobile : les cartes occupent toute la largeur. **À savoir :** la branche `ui-mobile` d’Antigravity ne contient pas cette ligne, `main` est la référence. |
 
+## Ma méthode et mes décisions
+
+Ma méthode en une phrase : l’IA écrit, je décide et je vérifie, et aucune IA ne valide son propre travail.
+
+Mes décisions
+
+* Preuve avant correction : pour chaque défaut, un commit de test qui échoue, puis un commit de correction. L’historique le prouve tout seul.
+* Contrôle indépendant : j’ai fait recalculer les totaux à part (17 650 000 FCFA) et comparé avec ceux de Claude Code, avant toute correction.
+* Garder la base en JavaScript simple, sans importer mon kit Next.js : moins de code à défendre, publication directe.
+* Deux agents, deux rôles : Claude Code pour la logique et les droits, Antigravity pour le style, chacun dans son dossier.
+* Le mobile pensé pour le terrain : j’ai vu que sur téléphone il fallait glisser d’étape en étape. J’ai fait passer l’affichage en liste verticale, pour un commercial qui utilise son pouce.
+* Des ajouts utiles, pas décoratifs : l’encart des 7 clients sans commercial transforme le défaut n°1 en action concrète, et l’historique répond au besoin de traçabilité d’un CRM.
+
 ## Les erreurs de l'IA que j'ai repérées
 
 * Test mal écrit (10 h 04) : dans le test du message d’erreur, l’IA avait écrit une regex qui imposait « client puis valeur » alors que son propre message dit l’inverse. Repéré parce que `npm test` a échoué APRÈS la correction. Sa première réparation du test ne vérifiait rien (un `assert.ok(true)`) ; elle l’a relue et réécrite avec une fonction de validation. Le commit de correction l’indique.
 * Vérification qui ne mesurait pas la bonne chose (11 h 33) : avant de fusionner `ui-mobile`, l’IA a vérifié les débordements horizontaux, la taille des cibles tactiles et la fiche, mais pas la largeur des colonnes du pipeline. Elle a donc annoncé « aucun problème » alors que les colonnes ne faisaient que la moitié de la largeur. Elle l’a vu en regardant une capture d’écran, l’a mesuré, puis corrigé à 11 h 36 ; sa vérification mesure désormais la largeur des colonnes.
 * Vérification sur une ancienne copie (10 h 17) : pour tester les montants invalides, l’IA a préparé une copie jetable du site, mais la suppression de l’ancienne copie a échoué (dossier verrouillé). Son serveur servait donc une version sans `pipeline.js`. Elle l’a vu grâce au message d’erreur de la commande, avant de tester, a recopié les fichiers par-dessus, puis a relancé le serveur.
 * Vérification incomplète à la fusion (9 h 50) : l’IA avait seulement lancé `npm test` après chaque fusion, sans rejouer chaque commit de test pour prouver qu’il échouait, et elle avait déjà supprimé les branches quand ma consigne est arrivée. Elle l’a fait après coup, en rejouant les commits restés dans l’historique.
-* 
+* Claude Code a fusionné avant mes règles de vérification. Je lui ai fait rejouer chaque preuve après coup.
+* Claude Code a « réparé » un test par assert.ok(true), qui ne vérifiait plus rien.
+* Antigravity a changé de branche dans le dossier de Claude Code. Je l’ai vu avec git branch --show-current et j’ai séparé les dossiers. Rien n’a été perdu.
+* Antigravity a créé une seconde fiche client, en doublon de celle de app.js : du code mort, que je lui ai fait retirer.
+* Claude Code a vérifié les débordements sur mobile, mais pas la largeur des colonnes : un défaut est passé, repéré puis corrigé avant le rendu.
+* (Après ton test) Les deux agents ont testé avec des scripts ou un navigateur émulé. J’ai refait les parcours moi-même, à la souris et sur mon téléphone.
 
 ## Les défauts trouvés dans le code et les données de départ
 
@@ -51,5 +69,6 @@ dont vous ne savez pas d'où il vient.*
 
 ## Ce que je ferais avec plus de temps
 
-* 
+Un vrai serveur (Supabase, avec des règles d’accès en base, que j’utilise sur mes projets) : aujourd’hui, les droits sont simulés dans le navigateur et clients.json est lisible par tous. Puis un historique partagé entre utilisateurs, et des tests de l’interface dans un vrai navigateur.
+
 

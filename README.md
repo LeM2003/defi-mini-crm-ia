@@ -100,4 +100,4 @@ par l'IA.
   [fiche](https://awake-glacier-w4v2.here.now/capture-fiche.png),
   [tableau de bord](https://awake-glacier-w4v2.here.now/capture-tableau-de-bord.png)
 - Outil(s) d'IA utilisé(s) : Claude Code, Antigravity, Claude
-- Heure de départ / heure de fin : 9 h 40 / 
+- Heure de départ / heure de fin : 9 h 40 / 12 h 00
