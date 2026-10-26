@@ -16,6 +16,17 @@ export function peutModifier(utilisateur, client) {
   return utilisateur.role === "commercial" && client.proprietaire === utilisateur.id;
 }
 
+// L'historique des modifications (qui, quoi, quand) est réservé au responsable.
+export function peutVoirHistorique(utilisateur) {
+  return utilisateur?.role === "responsable";
+}
+
+// Clients sans commercial : liste réservée au responsable, qui peut les réattribuer.
+export function clientsSansProprietaire(utilisateur, clients) {
+  if (utilisateur?.role !== "responsable") return [];
+  return (clients ?? []).filter((c) => !c.proprietaire);
+}
+
 // Seul le responsable réattribue, et uniquement vers un commercial qui existe.
 export function peutReattribuer(utilisateur, client, cibleId, utilisateurs) {
   if (utilisateur?.role !== "responsable" || !client) return false;
