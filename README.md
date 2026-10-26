@@ -92,8 +92,8 @@ par l'IA.
 
 ## Livrables (à remplir par le candidat)
 
-- Dépôt : 
-- Site publié sur here.now : 
+- Dépôt : https://github.com/LeM2003/defi-mini-crm-ia
+- Site publié sur here.now : https://sacred-pagoda-9adh.here.now/
 - Fichiers publiés (facultatif) : 
-- Outil(s) d'IA utilisé(s) : 
-- Heure de départ / heure de fin : 
+- Outil(s) d'IA utilisé(s) : Claude Code, Antigravity, Claude
+- Heure de départ / heure de fin : 9 h 40 / 
