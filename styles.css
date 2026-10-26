@@ -1,0 +1,213 @@
+/* ==========================================================================
+   MINI-CRM — IDENTITÉ VISUELLE IZISAAS
+   Design System sobre, professionnel et sans dépendance externe
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE DESIGN (THEME CLAIR PAR DÉFAUT - "LUMIÈRE ÉPURÉE")
+   -------------------------------------------------------------------------- */
+:root {
+  /* Palette neutre & surfaces */
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-subtle: #f1f5f9;
+  --bg-surface-hover: #f8fafc;
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Typographie & encres */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  /* Accent SaaS professionnel (Bleu Cobalt / iziSaaS) */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-active: #1e40af;
+  --accent-subtle: rgba(37, 99, 235, 0.08);
+  --accent-border: rgba(37, 99, 235, 0.25);
+  --accent-text: #1d4ed8;
+
+  /* Couleurs sémantiques des étapes du pipeline */
+  --color-prospect: #2563eb;
+  --bg-prospect: rgba(37, 99, 235, 0.08);
+  --border-prospect: rgba(37, 99, 235, 0.25);
+
+  --color-qualifie: #7c3aed;
+  --bg-qualifie: rgba(124, 58, 237, 0.08);
+  --border-qualifie: rgba(124, 58, 237, 0.25);
+
+  --color-proposition: #d97706;
+  --bg-proposition: rgba(217, 119, 6, 0.08);
+  --border-proposition: rgba(217, 119, 6, 0.25);
+
+  --color-gagne: #059669;
+  --bg-gagne: rgba(5, 150, 105, 0.08);
+  --border-gagne: rgba(5, 150, 105, 0.25);
+
+  --color-perdu: #dc2626;
+  --bg-perdu: rgba(220, 38, 38, 0.08);
+  --border-perdu: rgba(220, 38, 38, 0.25);
+
+  /* Typographie système (sans police externe requise) */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+
+  /* Espacements (grille de 8px) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+
+  /* Rayons de courbure (système iziSaaS cohérent) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Ombres et élévations */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-drawer: -10px 0 30px rgba(15, 23, 42, 0.15);
+
+  /* Transitions fluides */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Accessibilité & focus */
+  --focus-ring: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent);
+  --focus-ring-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. MODE SOMBRE AUTOMATIQUE ("NUIT PROFESSIONNELLE")
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #0b0f17;
+    --bg-surface: #151b28;
+    --bg-surface-elevated: #1c2436;
+    --bg-surface-subtle: #1e2638;
+    --bg-surface-hover: #263047;
+    --border-subtle: #252f44;
+    --border-strong: #384666;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-inverse: #0b0f17;
+
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --accent-active: #93c5fd;
+    --accent-subtle: rgba(59, 130, 246, 0.15);
+    --accent-border: rgba(59, 130, 246, 0.35);
+    --accent-text: #93c5fd;
+
+    --color-prospect: #60a5fa;
+    --bg-prospect: rgba(96, 165, 250, 0.12);
+    --border-prospect: rgba(96, 165, 250, 0.3);
+
+    --color-qualifie: #a78bfa;
+    --bg-qualifie: rgba(167, 139, 250, 0.12);
+    --border-qualifie: rgba(167, 139, 250, 0.3);
+
+    --color-proposition: #fbbf24;
+    --bg-proposition: rgba(251, 191, 36, 0.12);
+    --border-proposition: rgba(251, 191, 36, 0.3);
+
+    --color-gagne: #34d399;
+    --bg-gagne: rgba(52, 211, 153, 0.12);
+    --border-gagne: rgba(52, 211, 153, 0.3);
+
+    --color-perdu: #f87171;
+    --bg-perdu: rgba(248, 113, 113, 0.12);
+    --border-perdu: rgba(248, 113, 113, 0.3);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
+    --shadow-drawer: -10px 0 30px rgba(0, 0, 0, 0.6);
+
+    --focus-ring: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. RESET & STYLES GLOBAUX
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  min-height: 100vh;
+  padding: var(--space-4);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: var(--space-6) var(--space-8);
+  }
+}
+
+/* Accessibilité : Focus visible pour navigation au clavier */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Conteneur principal centré */
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
