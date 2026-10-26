@@ -27,8 +27,8 @@ export function modifierFiche(utilisateur, client, fiche) {
   let montant;
   try {
     montant = enNombre(fiche.montant_fcfa);
-  } catch (e) {
-    throw new ActionRefusee(`Montant invalide : un nombre positif ou nul est attendu (${e.message}).`);
+  } catch {
+    throw new ActionRefusee(`Montant invalide ${JSON.stringify(fiche.montant_fcfa)} : un nombre positif ou nul est attendu.`);
   }
   return { contact, telephone, montant_fcfa: montant };
 }
