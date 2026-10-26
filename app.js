@@ -10,8 +10,8 @@ const [utilisateurs, clients] = await Promise.all([
 const choix = document.getElementById("utilisateur");
 for (const u of utilisateurs) choix.add(new Option(`${u.nom} (${u.role})`, u.id));
 
-function afficher() {
-  const moi = utilisateurs.find((u) => u.id === choix.value);
+function dessiner() {
+  const moi =utilisateurs.find((u) => u.id === choix.value);
   const visibles = clientsVisibles(moi, clients);
   const colonnes = document.getElementById("pipeline");
   colonnes.innerHTML = "";
@@ -40,6 +40,19 @@ function afficher() {
       ligne.textContent = `${etape} : ${formaterFCFA(totaux[etape] ?? 0)}`;
       parEtape.append(ligne);
     }
+  }
+}
+// Un montant invalide (RangeError) n'est jamais affiché : on vide la page et on le signale.
+function afficher() {
+  const erreur = document.getElementById("erreur");
+  erreur.textContent = "";
+  try {
+    dessiner();
+  } catch (e) {
+    if (!(e instanceof RangeError)) throw e;
+    erreur.textContent = e.message;
+    document.getElementById("pipeline").replaceChildren();
+    document.getElementById("tableau-de-bord").hidden = true;
   }
 }
 choix.addEventListener("change", afficher);
