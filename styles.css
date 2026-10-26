@@ -1,0 +1,983 @@
+/* ==========================================================================
+   MINI-CRM — IDENTITÉ VISUELLE IZISAAS
+   Design System sobre, professionnel et sans dépendance externe
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE DESIGN (THEME CLAIR PAR DÉFAUT - "LUMIÈRE ÉPURÉE")
+   -------------------------------------------------------------------------- */
+:root {
+  /* Palette neutre & surfaces */
+  --bg-page: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-subtle: #f1f5f9;
+  --bg-surface-hover: #f8fafc;
+  --border-subtle: #e2e8f0;
+  --border-strong: #cbd5e1;
+
+  /* Typographie & encres */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  /* Accent SaaS professionnel (Bleu Cobalt / iziSaaS) */
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-active: #1e40af;
+  --accent-subtle: rgba(37, 99, 235, 0.08);
+  --accent-border: rgba(37, 99, 235, 0.25);
+  --accent-text: #1d4ed8;
+
+  /* Couleurs sémantiques des étapes du pipeline */
+  --color-prospect: #2563eb;
+  --bg-prospect: rgba(37, 99, 235, 0.08);
+  --border-prospect: rgba(37, 99, 235, 0.25);
+
+  --color-qualifie: #7c3aed;
+  --bg-qualifie: rgba(124, 58, 237, 0.08);
+  --border-qualifie: rgba(124, 58, 237, 0.25);
+
+  --color-proposition: #d97706;
+  --bg-proposition: rgba(217, 119, 6, 0.08);
+  --border-proposition: rgba(217, 119, 6, 0.25);
+
+  --color-gagne: #059669;
+  --bg-gagne: rgba(5, 150, 105, 0.08);
+  --border-gagne: rgba(5, 150, 105, 0.25);
+
+  --color-perdu: #dc2626;
+  --bg-perdu: rgba(220, 38, 38, 0.08);
+  --border-perdu: rgba(220, 38, 38, 0.25);
+
+  /* Typographie système (sans police externe requise) */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+
+  /* Espacements (grille de 8px) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+
+  /* Rayons de courbure (système iziSaaS cohérent) */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Ombres et élévations */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.03);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+  --shadow-drawer: -10px 0 30px rgba(15, 23, 42, 0.18);
+
+  /* Transitions fluides */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  /* Accessibilité & focus */
+  --focus-ring: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent);
+  --focus-ring-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. MODE SOMBRE AUTOMATIQUE ("NUIT PROFESSIONNELLE")
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page: #0b0f17;
+    --bg-surface: #151b28;
+    --bg-surface-elevated: #1c2436;
+    --bg-surface-subtle: #1e2638;
+    --bg-surface-hover: #263047;
+    --border-subtle: #252f44;
+    --border-strong: #384666;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-inverse: #0b0f17;
+
+    --accent: #3b82f6;
+    --accent-hover: #60a5fa;
+    --accent-active: #93c5fd;
+    --accent-subtle: rgba(59, 130, 246, 0.15);
+    --accent-border: rgba(59, 130, 246, 0.35);
+    --accent-text: #93c5fd;
+
+    --color-prospect: #60a5fa;
+    --bg-prospect: rgba(96, 165, 250, 0.12);
+    --border-prospect: rgba(96, 165, 250, 0.3);
+
+    --color-qualifie: #a78bfa;
+    --bg-qualifie: rgba(167, 139, 250, 0.12);
+    --border-qualifie: rgba(167, 139, 250, 0.3);
+
+    --color-proposition: #fbbf24;
+    --bg-proposition: rgba(251, 191, 36, 0.12);
+    --border-proposition: rgba(251, 191, 36, 0.3);
+
+    --color-gagne: #34d399;
+    --bg-gagne: rgba(52, 211, 153, 0.12);
+    --border-gagne: rgba(52, 211, 153, 0.3);
+
+    --color-perdu: #f87171;
+    --bg-perdu: rgba(248, 113, 113, 0.12);
+    --border-perdu: rgba(248, 113, 113, 0.3);
+
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.45), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.25);
+    --shadow-drawer: -10px 0 30px rgba(0, 0, 0, 0.6);
+
+    --focus-ring: 0 0 0 2px var(--bg-page), 0 0 0 4px var(--accent);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. RESET & STYLES GLOBAUX
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light dark;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
+  min-height: 100vh;
+  padding: var(--space-4);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: var(--space-6) var(--space-8);
+  }
+}
+
+/* Accessibilité : Focus visible au clavier pour tous les éléments interactifs */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: var(--focus-ring-offset);
+  border-radius: var(--radius-sm);
+}
+
+/* Conteneur principal centré */
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* --------------------------------------------------------------------------
+   4. EN-TÊTE DE L'APPLICATION (NAVBAR / HEADER)
+   -------------------------------------------------------------------------- */
+.app-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+  .app-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+  flex-shrink: 0;
+}
+
+.brand-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.brand-subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+
+/* Sélecteur d'utilisateur */
+.user-control-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background-color: var(--bg-surface-subtle);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.user-select-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.user-select {
+  appearance: none;
+  background-color: var(--bg-surface);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-2) center;
+  background-size: 16px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.user-select:hover {
+  border-color: var(--border-strong);
+}
+
+.user-select:focus,
+.user-select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* Bannière d'alerte & montants invalides */
+.alert-banner,
+.montants-invalides {
+  background-color: var(--bg-perdu);
+  color: var(--color-perdu);
+  border: 1px solid var(--border-perdu);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.alert-banner:empty,
+.montants-invalides:empty {
+  display: none;
+}
+
+/* Badges génériques */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.badge-subtle {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-manager {
+  background-color: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+/* --------------------------------------------------------------------------
+   5. TABLEAU DE BORD (TUILES DE CHIFFRES - KPIS)
+   -------------------------------------------------------------------------- */
+.dashboard-section {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  animation: fadeIn 250ms ease-out;
+}
+
+.dashboard-section[hidden] {
+  display: none !important;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.dashboard-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.dashboard-title {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+}
+
+.dashboard-subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Grille principale des tuiles de chiffres */
+.dashboard-kpi-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Tuile vedette (Total pipeline) */
+.kpi-tile-hero {
+  background: linear-gradient(135deg, var(--bg-surface-subtle) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border-subtle);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.kpi-tile-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-border);
+}
+
+.kpi-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.kpi-value-hero {
+  font-family: var(--font-mono);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: var(--weight-bold);
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  display: inline-block;
+}
+
+.kpi-meta {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Grille des tuiles par étape */
+.kpi-breakdown-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.kpi-breakdown-title {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Conteneur #par-etape stylisé en tuiles */
+#par-etape,
+.kpi-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--space-3);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Stylisation des <li> générés par app.js pour en faire des tuiles KPI */
+#par-etape li {
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+#par-etape li:hover {
+  background-color: var(--bg-surface);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border-strong);
+}
+
+/* Bordures supérieures colorées par étape */
+#par-etape li:nth-child(1) { border-top: 3px solid var(--color-prospect); }
+#par-etape li:nth-child(2) { border-top: 3px solid var(--color-qualifie); }
+#par-etape li:nth-child(3) { border-top: 3px solid var(--color-proposition); }
+#par-etape li:nth-child(4) { border-top: 3px solid var(--color-gagne); }
+#par-etape li:nth-child(5) { border-top: 3px solid var(--color-perdu); }
+
+/* Classes pour le balisage structuré des tuiles d'étape (Claude Code) */
+.kpi-stage-name {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.kpi-stage-amount {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   6. PIPELINE EN 5 COLONNES & CARTES CLIENTS
+   -------------------------------------------------------------------------- */
+
+/* Conteneur principal #pipeline : 5 colonnes desktop, 1 seule colonne à la fois sur mobile */
+#pipeline {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  gap: var(--space-4);
+  padding-bottom: var(--space-4);
+}
+
+@media (min-width: 769px) {
+  #pipeline {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(210px, 1fr));
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: none;
+  }
+}
+
+/* Colonne de chaque étape (section) */
+#pipeline > section {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-xs);
+  transition: border-color var(--transition-fast);
+  min-height: 280px;
+}
+
+@media (min-width: 769px) {
+  #pipeline > section {
+    flex: initial;
+    width: auto;
+    min-width: 210px;
+    max-width: none;
+    scroll-snap-align: none;
+  }
+}
+
+/* Bordures supérieures d'accentuation par étape */
+#pipeline > section:nth-child(1) { border-top: 4px solid var(--color-prospect); }
+#pipeline > section:nth-child(2) { border-top: 4px solid var(--color-qualifie); }
+#pipeline > section:nth-child(3) { border-top: 4px solid var(--color-proposition); }
+#pipeline > section:nth-child(4) { border-top: 4px solid var(--color-gagne); }
+#pipeline > section:nth-child(5) { border-top: 4px solid var(--color-perdu); }
+
+/* En-tête de colonne (h2) */
+#pipeline > section > h2 {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  text-transform: capitalize;
+  letter-spacing: var(--tracking-tight);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-1);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Cartes clients générées par app.js (article) */
+#pipeline > section > article {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal), background-color var(--transition-normal);
+  position: relative;
+}
+
+#pipeline > section > article:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+  background-color: var(--bg-surface-elevated);
+}
+
+#pipeline > section > article:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-xs);
+}
+
+#pipeline > section > article:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   7. BOUTONS D'ÉTAPE DU PIPELINE (.bouton-etape, .bouton-precedent, .bouton-suivant)
+   -------------------------------------------------------------------------- */
+.bouton-etape {
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  transition: all var(--transition-fast);
+  user-select: none;
+  white-space: nowrap;
+  min-height: 28px;
+}
+
+/* Survol de base */
+.bouton-etape:hover {
+  background-color: var(--bg-surface-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+/* Clic actif */
+.bouton-etape:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Focus visible au clavier */
+.bouton-etape:focus,
+.bouton-etape:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* État désactivé */
+.bouton-etape:disabled,
+.bouton-etape[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Bouton précédent spécifique */
+.bouton-precedent {
+  color: var(--text-secondary);
+}
+
+.bouton-precedent:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+/* Bouton suivant spécifique (action en avant valorisée) */
+.bouton-suivant {
+  color: var(--accent);
+  background-color: var(--accent-subtle);
+  border-color: var(--accent-border);
+}
+
+.bouton-suivant:hover {
+  background-color: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+/* Rangée d'actions sur mobile pour faciliter le toucher */
+@media (max-width: 768px) {
+  .bouton-etape {
+    min-height: 34px;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. FICHE CLIENT EN PANNEAU LATÉRAL (.fiche & COMPOSANTS)
+   -------------------------------------------------------------------------- */
+
+/* Le panneau latéral .fiche créé dynamiquement par app.js */
+.fiche {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-drawer);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  gap: var(--space-5);
+  overflow-y: auto;
+  transition: transform var(--transition-smooth), opacity var(--transition-fast);
+  animation: slideInRight 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fiche[hidden] {
+  display: none !important;
+}
+
+/* Adaptation mobile de la fiche */
+@media (max-width: 640px) {
+  .fiche {
+    max-width: 100%;
+    width: 100%;
+    border-left: none;
+    box-shadow: 0 -8px 30px rgba(15, 23, 42, 0.25);
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+/* Titre de la fiche client */
+.fiche-titre {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.25;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Bloc d'informations / récapitulatif du client */
+.fiche-info {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--bg-surface-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* Formulaire d'édition de la fiche */
+.fiche-formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Libellés / étiquettes des champs */
+.fiche-libelle {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* Champs de saisie (input, textarea) */
+.fiche-champ {
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.fiche-champ:hover {
+  border-color: var(--border-strong);
+}
+
+.fiche-champ:focus,
+.fiche-champ:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* Sélecteur de réattribution à un commercial */
+.fiche-reattribution {
+  appearance: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
+  width: 100%;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  background-size: 16px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.fiche-reattribution:hover {
+  border-color: var(--border-strong);
+}
+
+.fiche-reattribution:focus,
+.fiche-reattribution:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+/* Bouton enregistrer */
+.bouton-enregistrer {
+  appearance: none;
+  background-color: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+}
+
+.bouton-enregistrer:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.bouton-enregistrer:active {
+  background-color: var(--accent-active);
+  transform: translateY(0);
+}
+
+.bouton-enregistrer:focus,
+.bouton-enregistrer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.bouton-enregistrer:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+/* Bouton fermer */
+.bouton-fermer {
+  appearance: none;
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  user-select: none;
+}
+
+.bouton-fermer:hover {
+  background-color: var(--bg-surface-subtle);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-xs);
+}
+
+.bouton-fermer:active {
+  transform: translateY(0);
+}
+
+.bouton-fermer:focus,
+.bouton-fermer:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Animations d'entrée */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0.7; }
+  to { transform: translateX(0); opacity: 1; }
+}

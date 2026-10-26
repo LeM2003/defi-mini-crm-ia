@@ -3,25 +3,81 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mini-CRM — point de départ</title>
-  <style>
-    body { font-family: system-ui, sans-serif; margin: 1rem; }
-    #pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: .5rem; }
-    section { background: #f3f3f3; padding: .5rem; border-radius: 6px; }
-    article { background: #fff; margin: .3rem 0; padding: .3rem; border-radius: 4px; font-size: .9rem; }
-  </style>
+  <title>Mini-CRM — Orbus Digital</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Mini-CRM</h1>
-  <label>Connecté en tant que : <select id="utilisateur"></select></label>
-  <p id="erreur" role="alert"></p>
-  <div id="pipeline"></div>
-  <div id="tableau-de-bord" hidden>
-    <h2>Tableau de bord</h2>
-    <p>Pipeline en cours : <b id="total"></b></p>
-    <p>Par étape :</p>
-    <ul id="par-etape"></ul>
+  <div class="app-container">
+    <!-- En-tête / Barre supérieure -->
+    <header class="app-header">
+      <div class="brand-wrapper">
+        <div class="brand-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="brand-text-group">
+          <h1 class="brand-title">Mini-CRM</h1>
+          <span class="brand-subtitle">Orbus Digital · Pipeline Commercial</span>
+        </div>
+      </div>
+
+      <div class="user-control-bar">
+        <label for="utilisateur" class="user-select-label">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          Utilisateur
+        </label>
+        <select id="utilisateur" class="user-select"></select>
+      </div>
+    </header>
+
+    <!-- Message d'erreur éventuel -->
+    <p id="erreur" role="alert" class="alert-banner montants-invalides"></p>
+
+    <!-- Tableau de bord en tuiles de chiffres (réservé au responsable) -->
+    <section id="tableau-de-bord" class="dashboard-section" hidden aria-labelledby="dashboard-title">
+      <div class="dashboard-header">
+        <div class="dashboard-title-group">
+          <h2 id="dashboard-title" class="dashboard-title">Tableau de bord</h2>
+          <p class="dashboard-subtitle">Performance globale et opportunités par étape</p>
+        </div>
+        <span class="badge badge-manager">Vue Responsable</span>
+      </div>
+
+      <div class="dashboard-kpi-container">
+        <!-- Tuile vedette : total en cours -->
+        <div class="kpi-tile-hero">
+          <span class="kpi-label">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="12" y1="1" x2="12" y2="23"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            Pipeline en cours (hors perdus)
+          </span>
+          <div class="kpi-value-wrapper">
+            <b id="total" class="kpi-value-hero"></b>
+          </div>
+          <span class="kpi-meta">Montant total consolidé des opportunités actives</span>
+        </div>
+
+        <!-- Tuiles par étape -->
+        <div class="kpi-breakdown-section">
+          <h3 class="kpi-breakdown-title">Répartition par étape</h3>
+          <ul id="par-etape" class="kpi-stage-grid"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pipeline en colonnes -->
+    <div id="pipeline"></div>
   </div>
+
   <script type="module" src="app.js"></script>
 </body>
 </html>
