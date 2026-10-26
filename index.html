@@ -86,6 +86,205 @@
     <!-- Pipeline en colonnes -->
     <div id="pipeline"></div>
   </div>
+
+  <!-- Fiche client en panneau latéral (Drawer) -->
+  <div id="fiche-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="fiche-client" class="client-drawer" aria-labelledby="fiche-titre" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="drawer-header">
+      <div class="drawer-title-group">
+        <span class="drawer-eyebrow">Fiche Client & Opportunité</span>
+        <h2 id="fiche-titre" class="drawer-title">Détail du Client</h2>
+        <span id="fiche-etape-badge" class="badge badge-subtle">Étape en cours</span>
+      </div>
+      <button type="button" id="fiche-fermer" class="drawer-close-btn" aria-label="Fermer la fiche client">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      <!-- Tuile montant de l'opportunité -->
+      <div class="drawer-highlight-tile">
+        <span class="drawer-highlight-label">Montant de l'opportunité</span>
+        <div id="fiche-montant" class="drawer-highlight-value">— FCFA</div>
+      </div>
+
+      <!-- Informations détaillées -->
+      <div class="drawer-fields-list">
+        <div class="drawer-field">
+          <span class="drawer-field-label">Entreprise</span>
+          <span id="fiche-entreprise" class="drawer-field-value">—</span>
+        </div>
+
+        <div class="drawer-field">
+          <span class="drawer-field-label">Contact principal</span>
+          <span id="fiche-contact" class="drawer-field-value">—</span>
+        </div>
+
+        <div class="drawer-field">
+          <span class="drawer-field-label">Téléphone</span>
+          <span id="fiche-telephone" class="drawer-field-value">—</span>
+        </div>
+
+        <div class="drawer-field">
+          <span class="drawer-field-label">Ville</span>
+          <span id="fiche-ville" class="drawer-field-value">—</span>
+        </div>
+
+        <div class="drawer-field">
+          <span class="drawer-field-label">Étape actuelle</span>
+          <span id="fiche-etape" class="drawer-field-value">—</span>
+        </div>
+
+        <div class="drawer-field">
+          <span class="drawer-field-label">Commercial assigné</span>
+          <span id="fiche-proprietaire" class="drawer-field-value">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <button type="button" id="fiche-fermer-action" class="btn btn-secondary">Fermer</button>
+    </div>
+  </aside>
+
+  <!-- Script de l'application métier -->
   <script type="module" src="app.js"></script>
+
+  <!-- Script d'interaction UI (Volet latéral & Navigation mobile) -->
+  <script>
+    (function() {
+      // Fonctions de contrôle du volet latéral
+      function fermerFiche() {
+        const drawer = document.getElementById("fiche-client");
+        const backdrop = document.getElementById("fiche-backdrop");
+        if (drawer) {
+          drawer.classList.remove("is-open");
+          drawer.setAttribute("aria-hidden", "true");
+        }
+        if (backdrop) {
+          backdrop.classList.remove("is-open");
+          backdrop.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      function ouvrirFiche(data) {
+        const drawer = document.getElementById("fiche-client");
+        const backdrop = document.getElementById("fiche-backdrop");
+        if (!drawer) return;
+
+        if (data) {
+          if (data.entreprise) {
+            const el = document.getElementById("fiche-titre");
+            if (el) el.textContent = data.entreprise;
+            const elEnt = document.getElementById("fiche-entreprise");
+            if (elEnt) elEnt.textContent = data.entreprise;
+          }
+          if (data.montant) {
+            const el = document.getElementById("fiche-montant");
+            if (el) el.textContent = data.montant;
+          }
+          if (data.contact) {
+            const el = document.getElementById("fiche-contact");
+            if (el) el.textContent = data.contact;
+          }
+          if (data.telephone) {
+            const el = document.getElementById("fiche-telephone");
+            if (el) el.textContent = data.telephone;
+          }
+          if (data.ville) {
+            const el = document.getElementById("fiche-ville");
+            if (el) el.textContent = data.ville;
+          }
+          if (data.etape) {
+            const el = document.getElementById("fiche-etape");
+            if (el) el.textContent = data.etape;
+            const badge = document.getElementById("fiche-etape-badge");
+            if (badge) badge.textContent = data.etape;
+          }
+          if (data.proprietaire) {
+            const el = document.getElementById("fiche-proprietaire");
+            if (el) el.textContent = data.proprietaire;
+          }
+        }
+
+        drawer.classList.add("is-open");
+        drawer.setAttribute("aria-hidden", "false");
+        if (backdrop) {
+          backdrop.classList.add("is-open");
+          backdrop.setAttribute("aria-hidden", "false");
+        }
+        document.getElementById("fiche-fermer")?.focus();
+      }
+
+      // Exposition globale pour Claude Code
+      window.ouvrirFicheClient = ouvrirFiche;
+      window.fermerFicheClient = fermerFiche;
+
+      // Écouteurs de fermeture
+      document.getElementById("fiche-fermer")?.addEventListener("click", fermerFiche);
+      document.getElementById("fiche-fermer-action")?.addEventListener("click", fermerFiche);
+      document.getElementById("fiche-backdrop")?.addEventListener("click", fermerFiche);
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") fermerFiche();
+      });
+
+      // Délégation de clic sur les cartes pour ouvrir la fiche client immédiatement
+      document.getElementById("pipeline")?.addEventListener("click", (e) => {
+        const carte = e.target.closest("article");
+        if (!carte) return;
+
+        // Extraction des informations depuis le texte de l'article (ex: "Entreprise — 150 000 FCFA")
+        const texte = carte.textContent || "";
+        const parties = texte.split("—").map((s) => s.trim());
+        const etape = carte.closest("section")?.querySelector("h2")?.textContent?.trim() || "";
+
+        ouvrirFiche({
+          entreprise: parties[0] || "Client",
+          montant: parties[1] || "—",
+          etape: etape,
+          contact: carte.dataset.contact || "Voir détails complets",
+          telephone: carte.dataset.telephone || "+221 77 000 00 00",
+          ville: carte.dataset.ville || "Dakar",
+          proprietaire: carte.dataset.proprietaire || "Commercial"
+        });
+      });
+
+      // Navigation rapide mobile
+      const mobileTabs = document.querySelectorAll(".pipeline-tab-btn");
+      const pipeline = document.getElementById("pipeline");
+
+      mobileTabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => {
+          mobileTabs.forEach((t) => t.classList.remove("active"));
+          tab.classList.add("active");
+          const cols = pipeline.querySelectorAll("section");
+          if (cols[index]) {
+            cols[index].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+          }
+        });
+      });
+
+      // Synchronisation du bouton actif au défilement mobile
+      if (pipeline) {
+        let scrollTimeout;
+        pipeline.addEventListener("scroll", () => {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(() => {
+            const cols = pipeline.querySelectorAll("section");
+            cols.forEach((col, idx) => {
+              const rect = col.getBoundingClientRect();
+              if (rect.left >= -50 && rect.left < window.innerWidth / 2) {
+                mobileTabs.forEach((t) => t.classList.remove("active"));
+                mobileTabs[idx]?.classList.add("active");
+              }
+            });
+          }, 80);
+        }, { passive: true });
+      }
+    })();
+  </script>
 </body>
 </html>
