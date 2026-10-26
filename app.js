@@ -1,6 +1,13 @@
-import { clientsSansProprietaire, clientsVisibles, peutModifier, peutReattribuer, peutVoirTableauDeBord } from "./acces.js";
+import { clientsSansProprietaire, clientsVisibles, peutModifier, peutReattribuer, peutVoirHistorique, peutVoirTableauDeBord } from "./acces.js";
+import { creerEntree, decrire } from "./historique.js";
 import { ActionRefusee, deplacerClient, etapeVoisine, modifierFiche, reattribuerClient } from "./pipeline.js";
-import { appliquerModifications, chargerModifications, enregistrerModification } from "./stockage.js";
+import {
+  appliquerModifications,
+  chargerHistorique,
+  chargerModifications,
+  enregistrerEntreeHistorique,
+  enregistrerModification,
+} from "./stockage.js";
 import { ETAPES, formaterFCFA, montantsInvalides, totalParEtape, totalPipeline } from "./tableau.js";
 
 // Accéder à localStorage peut lever une exception (données de site bloquées, mode privé…).
@@ -18,6 +25,7 @@ const [utilisateurs, clientsDeBase] = await Promise.all([
   fetch("donnees/clients.json").then((r) => r.json()),
 ]);
 let clients = appliquerModifications(clientsDeBase, chargerModifications(stockage));
+let historique = chargerHistorique(stockage);
 let idFiche = null;
 
 const choix = document.getElementById("utilisateur");
@@ -32,7 +40,9 @@ const montantsInvalidesEl = document.createElement("div");
 montantsInvalidesEl.className = "montants-invalides";
 const sansCommercialEl = document.createElement("div");
 sansCommercialEl.className = "sans-commercial";
-document.getElementById("tableau-de-bord").append(sansCommercialEl, montantsInvalidesEl);
+const historiqueEl = document.createElement("div");
+historiqueEl.className = "historique";
+document.getElementById("tableau-de-bord").append(sansCommercialEl, montantsInvalidesEl, historiqueEl);
 
 function el(balise, classe, texte) {
   const e = document.createElement(balise);
@@ -61,8 +71,14 @@ function executer(action) {
   dessiner();
 }
 
-function modifier(client, champs) {
-  const enregistre = enregistrerModification(stockage, client.id, champs);
+// Applique les champs au client, les enregistre et ajoute une entrée à l'historique (qui, quoi, quand).
+function modifier(moi, client, champs) {
+  let enregistre = enregistrerModification(stockage, client.id, champs);
+  const entree = creerEntree(moi, client, champs, new Date());
+  if (entree) {
+    historique = [...historique, entree];
+    enregistre = enregistrerEntreeHistorique(stockage, entree) && enregistre;
+  }
   clients = clients.map((c) => (c.id === client.id ? { ...c, ...champs } : c));
   if (!enregistre) {
     erreur.textContent = "Modification non enregistrée : le stockage du navigateur est indisponible (elle sera perdue au rechargement).";
@@ -89,7 +105,7 @@ function carte(moi, c, invalides) {
       ["bouton-etape bouton-suivant", "→", "Étape suivante", 1],
     ]) {
       const cible = etapeVoisine(c.etape, decalage);
-      const b = bouton(classe, symbole, () => executer(() => modifier(c, deplacerClient(moi, c, cible))));
+      const b = bouton(classe, symbole, () => executer(() => modifier(moi, c, deplacerClient(moi, c, cible))));
       b.setAttribute("aria-label", cible ? `${libelle} : ${cible}` : libelle);
       b.disabled = cible === null;
       actions.append(b);
@@ -149,6 +165,26 @@ function dessinerTableauDeBord(moi) {
   }
 }
 
+const ENTREES_AFFICHEES = 20;
+
+function dateLisible(quand) {
+  const date = new Date(quand);
+  return Number.isNaN(date.getTime()) ? "?" : date.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
+}
+
+// Historique des modifications : réservé au responsable, les plus récentes en premier.
+function dessinerHistorique(moi) {
+  historiqueEl.replaceChildren();
+  if (!peutVoirHistorique(moi) || historique.length === 0) return;
+  const liste = el("ul", "historique-liste");
+  for (const entree of historique.slice(-ENTREES_AFFICHEES).reverse()) {
+    const ligne = el("li", "historique-ligne");
+    ligne.append(el("span", "historique-date", dateLisible(entree.quand)), " ", el("span", "historique-texte", decrire(entree, utilisateurs)));
+    liste.append(ligne);
+  }
+  historiqueEl.append(el("h3", "historique-titre", `Historique des modifications (${historique.length})`), liste);
+}
+
 function dessinerFiche(moi, visibles) {
   const client = visibles.find((c) => c.id === idFiche);
   fiche.hidden = !client;
@@ -176,7 +212,7 @@ function dessinerFiche(moi, visibles) {
     formulaire.addEventListener("submit", (evenement) => {
       evenement.preventDefault();
       const valeurs = { contact: saisies.contact.value, telephone: saisies.telephone.value, montant_fcfa: saisies.montant_fcfa.value };
-      executer(() => modifier(client, modifierFiche(moi, client, valeurs)));
+      executer(() => modifier(moi, client, modifierFiche(moi, client, valeurs)));
     });
   }
   fiche.append(
@@ -192,7 +228,7 @@ function dessinerFiche(moi, visibles) {
     if (!client.proprietaire) selection.add(new Option("— sans propriétaire —", ""));
     for (const u of cibles) selection.add(new Option(u.nom, u.id));
     selection.value = client.proprietaire ?? "";
-    selection.addEventListener("change", () => executer(() => modifier(client, reattribuerClient(moi, client, selection.value, utilisateurs))));
+    selection.addEventListener("change", () => executer(() => modifier(moi, client, reattribuerClient(moi, client, selection.value, utilisateurs))));
     const champ = el("label", "fiche-reattribution");
     champ.append(el("span", "fiche-libelle", "Réattribuer à"), selection);
     fiche.append(champ);
@@ -207,6 +243,7 @@ function dessiner() {
   const invalides = new Set(montantsInvalides(clients).map((m) => m.id));
   dessinerPipeline(moi, visibles, invalides);
   dessinerTableauDeBord(moi);
+  dessinerHistorique(moi);
   dessinerFiche(moi, visibles);
 }
 
