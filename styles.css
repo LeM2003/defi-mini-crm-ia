@@ -281,9 +281,12 @@ body {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .user-select-label {
+  flex-shrink: 0;
   font-size: var(--text-xs);
   font-weight: var(--weight-semibold);
   color: var(--text-secondary);
@@ -311,6 +314,9 @@ body {
   background-position: right var(--space-2) center;
   background-size: 16px;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .user-select:hover {
@@ -369,12 +375,6 @@ body {
   font-weight: var(--weight-semibold);
   letter-spacing: 0.02em;
   white-space: nowrap;
-}
-
-.badge-subtle {
-  background-color: var(--bg-surface-subtle);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
 }
 
 .badge-manager {
@@ -743,6 +743,36 @@ body {
   }
 }
 
+@media (max-width: 640px) {
+  .app-header {
+    padding: var(--space-3) var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .user-control-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    gap: var(--space-2);
+  }
+
+  .user-select-label {
+    flex-shrink: 0;
+  }
+
+  .user-select {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(100% - 90px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+  }
+}
+
 /* Layout mobile (<= 640px, notamment 390px) : étapes empilées verticalement */
 @media (max-width: 640px) {
   #pipeline {
@@ -926,10 +956,23 @@ body {
   color: var(--accent);
 }
 
+.carte-invalide,
+.carte.carte-invalide {
+  background-color: var(--bg-perdu);
+  border-color: var(--border-perdu);
+  border-left: 4px solid var(--color-perdu);
+}
+
+.carte-invalide:hover {
+  background-color: var(--bg-perdu);
+  border-color: var(--color-perdu);
+}
+
 .carte-invalide .carte-montant {
   color: var(--color-perdu);
   font-size: var(--text-xs);
   font-style: italic;
+  font-weight: var(--weight-bold);
 }
 
 /* Rangée d'actions sur la carte */
