@@ -204,6 +204,11 @@ test("decrire : une entrée à valeurs exotiques ne lève pas d'exception", () =
   assert.equal(typeof historique.decrire(exotique, utilisateurs), "string");
 });
 
+test("decrire : même un getter qui lève ne propage pas d'exception", () => {
+  const piege = { type: "deplacement", get qui() { throw new Error("piège"); } };
+  assert.equal(historique.decrire(piege, utilisateurs), "Modification illisible.");
+});
+
 test("decrire : ne modifie pas l'entrée ni la liste (objets gelés)", () => {
   const entree = geler(historique.creerEntree(mariama, pikine, { proprietaire: "u2" }, MAINTENANT));
   const liste = geler(utilisateurs.map((u) => ({ ...u })));
