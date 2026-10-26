@@ -54,7 +54,7 @@ Mes décisions
 * Antigravity a changé de branche dans le dossier de Claude Code. Je l’ai vu avec git branch --show-current et j’ai séparé les dossiers. Rien n’a été perdu.
 * Antigravity a créé une seconde fiche client, en doublon de celle de app.js : du code mort, que je lui ai fait retirer.
 * Claude Code a vérifié les débordements sur mobile, mais pas la largeur des colonnes : un défaut est passé, repéré puis corrigé avant le rendu.
-* (Après ton test) Les deux agents ont testé avec des scripts ou un navigateur émulé. J’ai refait les parcours moi-même, à la souris et sur mon téléphone.
+* Les deux agents ont testé avec des scripts ou un navigateur émulé. J’ai refait les parcours moi-même, à la souris et sur mon téléphone.
 
 ## Les défauts trouvés dans le code et les données de départ
 
