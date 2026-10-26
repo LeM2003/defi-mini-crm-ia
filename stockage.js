@@ -66,3 +66,43 @@ export function appliquerModifications(clients, modifications) {
     return { ...client, ...filtres };
   });
 }
+
+// --- Historique des modifications (qui, quoi, quand), sous une clé distincte de CLE_STOCKAGE ---
+
+export const CLE_HISTORIQUE = "mini-crm-historique-v1";
+
+const MAX_ENTREES = 200;
+
+function entreeValide(entree) {
+  return (
+    estObjetSimple(entree) &&
+    typeof entree.quand === "string" &&
+    estObjetSimple(entree.qui) &&
+    estObjetSimple(entree.client) &&
+    Array.isArray(entree.changements)
+  );
+}
+
+export function chargerHistorique(stockage) {
+  let brut;
+  try {
+    brut = stockage.getItem(CLE_HISTORIQUE);
+    if (typeof brut !== "string") return [];
+    brut = JSON.parse(brut);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(brut)) return [];
+  return brut.filter(entreeValide).slice(-MAX_ENTREES);
+}
+
+export function enregistrerEntreeHistorique(stockage, entree) {
+  if (!entreeValide(entree)) return false;
+  const historique = [...chargerHistorique(stockage), entree].slice(-MAX_ENTREES);
+  try {
+    stockage.setItem(CLE_HISTORIQUE, JSON.stringify(historique));
+    return true;
+  } catch {
+    return false;
+  }
+}
